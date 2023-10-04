@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            /* Horizontally center align */
+            align-items: center;
+            /* Vertically center align */
+            height: 100vh;
+            /* Make the entire page fill the viewport height */
+            margin: 0;
+        }
+
+        #calculator {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #display {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            /* Bold border */
+            border-radius: 5px;
+            font-size: 18px;
+            max-width: 100%;
+            /* Max width */
+            text-align: right;
+            /* Right-align text */
+            box-sizing: border-box;
+            /* Prevent border from adding to width */
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .row button {
+            flex: 1;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #337ab7;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .row button:hover {
+            background-color: #23527c;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="calculator">
+        <input type="text" id="display">
+        <div class="row">
+            <button value="7" onclick="appendToDisplay('7')">7</button>
+            <button value="8" onclick="appendToDisplay('8')">8</button>
+            <button value="9" onclick="appendToDisplay('9')">9</button>
+            <button value="/" onclick="appendToDisplay('/')">/</button>
+        </div>
+        <div class="row">
+            <button value="4" onclick="appendToDisplay('4')">4</button>
+            <button value="5" onclick="appendToDisplay('5')">5</button>
+            <button value="6" onclick="appendToDisplay('6')">6</button>
+            <button value="-" onclick="appendToDisplay('-')">-</button>
+        </div>
+        <div class="row">
+            <button value="1" onclick="appendToDisplay('1')">1</button>
+            <button value="2" onclick="appendToDisplay('2')">2</button>
+            <button value="3" onclick="appendToDisplay('3')">3</button>
+            <button value="+" onclick="appendToDisplay('+')">+</button>
+        </div>
+        <div class="row">
+            <button value="0" onclick="appendToDisplay('0')">0</button>
+            <button value="." onclick="appendToDisplay('.')">.</button>
+            <button value="=" onclick="getResult()">=</button>
+            <button value="C" onclick="clearAll()">C</button>
+        </div>
+        <div class="row">
+            <button value="sin" onclick="Sin()">sin()</button>
+            <button value="cos" onclick="Cos()">cos()</button>
+            <button value="tan" onclick="Tan()">tan()</button>
+            <button value="√" onclick="Sqrt()">√</button>
+        </div>
+        <div class="row">
+            <button value="*" onclick="appendToDisplay('*')">*</button>
+            <button value="^" onclick="appendToDisplay('**')">^</button>
+            <button value="log" onclick="Log()">log()</button>
+            <button value="←" onclick="moveCursor()">&#8592;</button> <!-- New button to move cursor left -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript code
+        function appendToDisplay(value) {
+            // Append the user's input value to the display
+            const display = document.getElementById('display');
+            const startPos = display.selectionStart;
+            const endPos = display.selectionEnd;
+            const currentValue = display.value;
+            const newValue = currentValue.substring(0, startPos) + value + currentValue.substring(endPos);
+            display.value = newValue;
+            display.setSelectionRange(startPos + value.length, startPos + value.length);
+            display.focus();
+        }
+
+        function clearAll() {
+            // Clear the display
+            document.getElementById('display').value = '';
+        }
+
+        function getResult() {
+            try {
+                // Calculate the user's input expression and display the result
+                const expression = document.getElementById('display').value;
+                const result = eval(expression);
+                document.getElementById('display').value = result;
+            } catch (error) {
+                // Display an error message if an error occurs during calculation
+                document.getElementById('display').value = 'Error';
+            }
+        }
+
+        function Sin() {
+            // Calculate sine value
+            const angle = parseFloat(document.getElementById('display').value);
+            const radians = (angle * Math.PI) / 180;
+            const sinValue = Math.sin(radians);
+            document.getElementById('display').value = sinValue.toFixed(8); // Round to 8 decimal places
+        }
+
+        function Cos() {
+            // Calculate cosine value
+            const angle = parseFloat(document.getElementById('display').value);
+            const radians = (angle * Math.PI) / 180;
+            const cosValue = Math.cos(radians);
+            document.getElementById('display').value = cosValue.toFixed(8); // Round to 8 decimal places
+        }
+
+        function Tan() {
+            // Calculate tangent value
+            const angle = parseFloat(document.getElementById('display').value);
+            const radians = (angle * Math.PI) / 180;
+            const tanValue = Math.tan(radians);
+            document.getElementById('display').value = tanValue.toFixed(8); // Round to 8 decimal places
+        }
+
+        function Sqrt() {
+            // Calculate square root
+            const value = parseFloat(document.getElementById('display').value);
+            const sqrtValue = Math.sqrt(value);
+            document.getElementById('display').value = sqrtValue.toFixed(8); // Round to 8 decimal places
+        }
+
+        function Log() {
+            // Calculate base 10 logarithm
+            const value = parseFloat(document.getElementById('display').value);
+            const logValue = Math.log10(value);
+            document.getElementById('display').value = logValue.toFixed(8); // Round to 8 decimal places
+        }
+
+        function moveCursor() {
+            // Move the cursor one position to the left
+            const display = document.getElementById('display');
+            const currentPosition = display.selectionStart;
+            if (currentPosition > 0) {
+                display.setSelectionRange(currentPosition - 1, currentPosition - 1);
+                display.focus();
+            }
+        }
+    </script>
+</body>
+
+</html>
